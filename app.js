@@ -10,11 +10,41 @@ GAME RULES:
 */
 
 //create variables for the most important things going on  in the game
-var scores, roundScore, activePlayer, dice;
+var scores, roundScore, activePlayer;
 
 scores = [0,0];
 roundScore = 0;
 activePlayer = 0;
 
+
+
+//when when page first loads, dice will be hidden.
+document.querySelector('.dice').style.display = 'none';
+
+
+document.querySelector('.btn-roll').addEventListener('click', function() {
+  // 1. Random number (removed dice var from global scope and put inside event function)
+  var dice = Math.floor(Math.random() * 6) + 1;
+
+  // 2. Display the result (displays the appropriate dice image)
+  var diceDOM = document.querySelector('.dice');
+  diceDOM.style.display = 'block';
+  diceDOM.src = 'dice-' + dice + ".png";
+
+  // 3. Update the round score IF th rolled number was NOT an 1
+  
+});
+
+
+
+
 //combining random method with floor method to return a random whole number instead of decimal.
-dice = Math.floor(Math.random() *6) + 1;
+// dice = Math.floor(Math.random() *6) + 1;
+
+//used query selector with active player selection concatonated to make the query dynamic.
+// document.querySelector('#current-' + activePlayer).textContent = dice;
+
+// document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>';
+
+// var x = document.querySelector("#score-0").textContent;
+// console.log(x);
