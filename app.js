@@ -43,7 +43,32 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
       roundScore += dice;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
     } else {
-      //next player and resets score to 0
+      //Next player and resets score to 0
+        nextPlayer();
+    }
+});
+
+
+//HOLD BUTTON FUNCTIONALITY///
+
+
+
+    document.querySelector('.btn-hold').addEventListener('click', function() {
+      //add CURRENT score to GLOBAL scores
+      scores[activePlayer] += roundScore;
+
+      //Update the UI
+     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+
+      //check if player won the game
+
+      //Next Player took next player functionality from the callback function above and created a separate function to call separately and not repeat code.
+      nextPlayer();
+});
+
+
+    function nextPlayer() {
+      //Next player and resets score to 0
       activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
       roundScore = 0;
 
@@ -55,8 +80,8 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
       document.querySelector('.player-1-panel').classList.toggle('active')
 
       document.querySelector('.dice').style.display = "none";
-    }
-});
+
+    };
 
 
 
