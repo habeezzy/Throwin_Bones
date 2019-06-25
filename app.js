@@ -12,21 +12,8 @@ GAME RULES:
 //create variables for the most important things going on  in the game
 var scores, roundScore, activePlayer;
 
-scores = [0,0];
-roundScore = 0;
-activePlayer = 0;
-
-
-
-//when when page first loads, dice will be hidden.
-document.querySelector('.dice').style.display = 'none';
-
-//setting all scores to 0 at start of game
-document.getElementById('score-0').textContent = "0";
-document.getElementById('score-1').textContent = "0";
-document.getElementById('current-0').textContent = "0";
-document.getElementById('current-1').textContent = "0";
-
+//starts the game
+init()
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
   // 1. Random number (removed dice var from global scope and put inside event function)
@@ -62,8 +49,17 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 
       //check if player won the game
 
+     if(scores[activePlayer] >= 20) {
+       document.querySelector('#name-' + activePlayer).textContent = "Winner!";
+       document.querySelector('.dice').style.display = 'none';
+       document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+       document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+     } else {
+       nextPlayer();
+     }
+
       //Next Player took next player functionality from the callback function above and created a separate function to call separately and not repeat code.
-      nextPlayer();
+      // nextPlayer();
 });
 
 
@@ -81,6 +77,29 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 
       document.querySelector('.dice').style.display = "none";
 
+
+    };
+
+
+    document.querySelector('.btn-new').addEventListener('click', function() {
+
+    });
+
+
+    //initializes scores to zero to begin the game
+    function init() {
+      scores = [0,0];
+      roundScore = 0;
+      activePlayer = 0;
+
+      //when when page first loads, dice will be hidden.
+      document.querySelector('.dice').style.display = 'none';
+
+      //setting all scores to 0 at start of game
+      document.getElementById('score-0').textContent = "0";
+      document.getElementById('score-1').textContent = "0";
+      document.getElementById('current-0').textContent = "0";
+      document.getElementById('current-1').textContent = "0";
     };
 
 
