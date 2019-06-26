@@ -9,57 +9,66 @@ GAME RULES:
 
 */
 
+
+
 //create variables for the most important things going on  in the game
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, isPlaying;
 
 //starts the game
 init()
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
-  // 1. Random number (removed dice var from global scope and put inside event function)
-  var dice = Math.floor(Math.random() * 6) + 1;
+  if(isPlaying) {
 
-  // 2. Display the result (displays the appropriate dice image)
-  var diceDOM = document.querySelector('.dice');
-  diceDOM.style.display = 'block';
-  diceDOM.src = 'dice-' + dice + ".png";
+    // 1. Random number (removed dice var from global scope and put inside event function)
+    var dice = Math.floor(Math.random() * 6) + 1;
 
-  // 3. Update the round score IF th rolled number was NOT an 1
+    // 2. Display the result (displays the appropriate dice image)
+    var diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = 'block';
+    diceDOM.src = 'dice-' + dice + ".png";
+
+    // 3. Update the round score IF th rolled number was NOT an 1
     if(dice !== 1) {
       //add score then display in user interface
       roundScore += dice;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
     } else {
       //Next player and resets score to 0
-        nextPlayer();
+      nextPlayer();
     }
+
+  }
+
 });
 
 
-//HOLD BUTTON FUNCTIONALITY///
+//------------HOLD BUTTON FUNCTIONALITY----------///
 
 
 
     document.querySelector('.btn-hold').addEventListener('click', function() {
-      //add CURRENT score to GLOBAL scores
-      scores[activePlayer] += roundScore;
+      if(isPlaying) {
+        //add CURRENT score to GLOBAL scores
+        scores[activePlayer] += roundScore;
 
-      //Update the UI
-     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
+        //Update the UI
+        document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
-      //check if player won the game
+        //check if player won the game
 
-     if(scores[activePlayer] >= 20) {
-       document.querySelector('#name-' + activePlayer).textContent = "Winner!";
-       document.querySelector('.dice').style.display = 'none';
-       document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
-       document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
-     } else {
-       nextPlayer();
-     }
-
-      //Next Player took next player functionality from the callback function above and created a separate function to call separately and not repeat code.
-      // nextPlayer();
+        if(scores[activePlayer] >= 21) {
+          document.querySelector('#name-' + activePlayer).textContent = "Winner!";
+          document.querySelector('.dice').style.display = 'none';
+          document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+          document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+          isPlaying = false;
+        } else {
+          nextPlayer();
+        }
+        //Next Player took next player functionality from the callback function above and created a separate function to call separately and not repeat code.
+        // nextPlayer();
+      }
 });
 
 
@@ -81,16 +90,15 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     };
 
 
-    document.querySelector('.btn-new').addEventListener('click', function() {
-
-    });
-
+    document.querySelector('.btn-new').addEventListener('click', init);
 
     //initializes scores to zero to begin the game
     function init() {
       scores = [0,0];
       roundScore = 0;
       activePlayer = 0;
+      //isPlaying is a state variable
+      isPlaying = true;
 
       //when when page first loads, dice will be hidden.
       document.querySelector('.dice').style.display = 'none';
@@ -100,16 +108,22 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
       document.getElementById('score-1').textContent = "0";
       document.getElementById('current-0').textContent = "0";
       document.getElementById('current-1').textContent = "0";
+      document.getElementById('name-0').textContent = 'Player 1';
+      document.getElementById('name-1').textContent = 'Player 2';
+      document.querySelector('.player-0-panel').classList.remove('winner');
+      document.querySelector('.player-1-panel').classList.remove('winner');
+      document.querySelector('.player-0-panel').classList.remove('active');
+      document.querySelector('.player-0-panel').classList.add('active');
+      document.querySelector('.player-1-panel').classList.remove('active');
     };
 
 
-
+// above, I removed then added active class again to avoid applying an active class to panel twice.
 
 //combining random method with floor method to return a random whole number instead of decimal.
 // dice = Math.floor(Math.random() *6) + 1;
 
 //used query selector with active player selection concatonated to make the query dynamic.
-
 
 // document.querySelector('#current-' + activePlayer).innerHTML = '<em>' + dice + '</em>';
 
